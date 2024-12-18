@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.RobotContainer;
 
 public class ArmCommands {
-    public static Command getSetTargetAngleCommand() {
+    public static Command getSetTargetAngleCommand(double angle) {
         return new InstantCommand(
-                () -> RobotContainer.ARM.up(),
+                () -> RobotContainer.ARM.move(angle),
                 (Subsystem) RobotContainer.ARM
         );
     }
