@@ -10,7 +10,7 @@ public class ArmCommands {
     public static Command getSetTargetAngleCommand(double angle) {
         return new InstantCommand(
                 () -> RobotContainer.ARM.move(angle),
-                (Subsystem) RobotContainer.ARM
+                RobotContainer.ARM
         );
     }
 

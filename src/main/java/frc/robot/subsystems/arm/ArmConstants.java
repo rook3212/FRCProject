@@ -6,7 +6,6 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 
 public class ArmConstants {
@@ -14,16 +13,11 @@ public class ArmConstants {
     static final TalonFX MOTOR = new TalonFX(motorId);
     private static final int canCoderId = 12;
     static final CANcoder ENCODER = new CANcoder(canCoderId);
-    private static double P;
-    private static double I;
-    private static double D;
+    private static final double P = 3;
+    private static final double I = 0;
+    private static final double D =2;
     static final PIDController PID_CONTROLLER = new PIDController(P, I, D);
     public static final boolean FOC_ENABLED = true;
-     public  void setPID(double P, double I, double D){
-        this.P=P;
-        this.I=I;
-        this.D=D;
-    }
 
     static final StatusSignal<Double> ANGLE_CAN_CODER_POSITION_SIGNAL = ENCODER.getPosition();
     private static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
@@ -32,7 +26,6 @@ public class ArmConstants {
 
     static {
         TalonFXConfiguration config = new TalonFXConfiguration();
-        PID_CONTROLLER.setIZone(Double.POSITIVE_INFINITY);
         config.Audio.BeepOnConfig = false;
         config.Audio.BeepOnBoot = false;
         config.MotorOutput.Inverted = INVERTED_VALUE;
@@ -42,5 +35,4 @@ public class ArmConstants {
         MOTOR.getConfigurator().apply(config);
         ENCODER.optimizeBusUtilization();
     }
-
 }
