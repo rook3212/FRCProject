@@ -11,6 +11,7 @@ import frc.robot.subsystems.arm.Arm;
 
 
 public class RobotContainer {
+
    public static Arm ARM = new Arm();
 
     public RobotContainer() {
