@@ -30,9 +30,9 @@ public class ArmConstants {
 
     private static final double GEAR_RATIO = 2.5;
 
-    private static  TalonFXConfiguration TALON_CONFIG = new TalonFXConfiguration(); 
 
     private static void SET_MOTOR_CONFIGURATION() {
+        TalonFXConfiguration TALON_CONFIG = new TalonFXConfiguration();
         TALON_CONFIG.Audio.BeepOnConfig = false;
         TALON_CONFIG.Audio.BeepOnBoot = false;
         TALON_CONFIG.MotorOutput.Inverted = INVERTED_VALUE;
