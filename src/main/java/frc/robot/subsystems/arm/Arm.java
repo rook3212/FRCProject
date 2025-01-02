@@ -13,7 +13,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setTargetAngle(Rotation2d targetAngle) {
-        double pidOutput = ArmConstants.PID_CONTROLLER.calculate(GET_ANGLE_CANCODER_POSITION().getDegrees(), targetAngle.getDegrees());
+        double pidOutput = ArmConstants.PID_CONTROLLER.calculate(GET_ANGLE_ENCODER_POSITION().getDegrees(), targetAngle.getDegrees());
         setTargetVoltage(pidOutput);
     }
 
@@ -21,8 +21,8 @@ public class Arm extends SubsystemBase {
         motor.stopMotor();
     }
 
-    private static Rotation2d GET_ANGLE_CANCODER_POSITION() {
-        return Rotation2d.fromRotations(ArmConstants.ANGLE_ENCODER_POSITION_SIGNAL.refresh().getValue());
+    private static Rotation2d GET_ANGLE_ENCODER_POSITION() {
+        return Rotation2d.fromDegrees(ArmConstants.ANGLE_ENCODER_POSITION_SIGNAL.refresh().getValue());
     }
 
     private void setTargetVoltage(double voltage) {
