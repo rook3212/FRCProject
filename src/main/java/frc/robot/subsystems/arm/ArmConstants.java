@@ -2,11 +2,13 @@ package frc.robot.subsystems.arm;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.controller.PIDController;
 
 public class ArmConstants {
@@ -30,7 +32,8 @@ public class ArmConstants {
     private static final NeutralModeValue NEUTRAL_MODE_VALUE = NeutralModeValue.Brake;
 
     private static final double GEAR_RATIO = 2.5;
-    
+
+
     private static void SET_MOTOR_CONFIGURATION() {
         TalonFXConfiguration TALON_CONFIG = new TalonFXConfiguration();
         TALON_CONFIG.Audio.BeepOnConfig = false;
@@ -43,8 +46,12 @@ public class ArmConstants {
     }
 
     private static void SET_ENCODER_CONFIGURATION() {
-        ANGLE_ENCODER_POSITION_SIGNAL.setUpdateFrequency(100);
-        ENCODER.getPositionSinceBoot();
+        MagnetSensorConfigs magnetSensor = new MagnetSensorConfigs();
+        CANcoderConfiguration ENCODER_CONFIGURATION = new CANcoderConfiguration();
+        ENCODER_CONFIGURATION.withMagnetSensor(magnetSensor);
+        magnetSensor.withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
+        ENCODER.getConfigurator().apply(ENCODER_CONFIGURATION);
         ENCODER.optimizeBusUtilization();
+        ANGLE_ENCODER_POSITION_SIGNAL.setUpdateFrequency(100);
     }
 }
