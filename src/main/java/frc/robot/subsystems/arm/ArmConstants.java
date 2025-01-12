@@ -13,17 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class ArmConstants {
     private static final int MOTOR_ID = 5;
-    public static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
-
-    private static final int ENCODER_ID = 34;
-    private static final CANcoder ENCODER = new CANcoder(ENCODER_ID);
-
-    private static final double P = 3, I = 0, D = 2;
-    protected static final PIDController PID_CONTROLLER = new PIDController(P, I, D);
-
-    public static final boolean FOC_ENABLED = true;
-
-    static final StatusSignal<Double> ANGLE_ENCODER_POSITION_SIGNAL = ENCODER.getPosition();
+    static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
 
     private static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
 
@@ -31,7 +21,25 @@ public class ArmConstants {
 
     private static final double GEAR_RATIO = 2.5;
 
+    public static final boolean FOC_ENABLED = true;
+
+    private static final int ENCODER_ID = 34;
+    private static final CANcoder ENCODER = new CANcoder(ENCODER_ID);
+
+    static final StatusSignal<Double> ANGLE_ENCODER_POSITION_SIGNAL = ENCODER.getPosition();
+
     private static final SensorDirectionValue SENSOR_DIRECTION_VALUE = SensorDirectionValue.CounterClockwise_Positive;
+
+    private static final double
+            P = 3,
+            I = 0,
+            D = 2;
+    static final PIDController PID_CONTROLLER = new PIDController(P, I, D);
+
+    static {
+        configureMotor();
+        configureEncoder();
+    }
 
     public static void configureMotor() {
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -50,10 +58,5 @@ public class ArmConstants {
         ENCODER.getConfigurator().apply(config);
         ENCODER.optimizeBusUtilization();
         ANGLE_ENCODER_POSITION_SIGNAL.setUpdateFrequency(100);
-    }
-
-    static {
-        configureMotor();
-        configureEncoder();
     }
 }
