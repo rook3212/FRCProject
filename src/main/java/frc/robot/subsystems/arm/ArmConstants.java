@@ -15,17 +15,15 @@ public class ArmConstants {
     private static final int MOTOR_ID = 5;
     public static final TalonFX MOTOR = new TalonFX(MOTOR_ID);
 
-    private static final int CANCODER_ID = 34;
-    public static final CANcoder ENCODER = new CANcoder(CANCODER_ID);
+    private static final int ENCODER_ID = 34;
+    private static final CANcoder ENCODER = new CANcoder(ENCODER_ID);
 
-    private static final double P = 3;
-    private static final double I = 0;
-    private static final double D = 2;
+    private static final double P = 3, I = 0, D = 2;
     protected static final PIDController PID_CONTROLLER = new PIDController(P, I, D);
 
     public static final boolean FOC_ENABLED = true;
 
-    protected static final StatusSignal<Double> ANGLE_ENCODER_POSITION_SIGNAL = ENCODER.getPosition();
+    static final StatusSignal<Double> ANGLE_ENCODER_POSITION_SIGNAL = ENCODER.getPosition();
 
     private static final InvertedValue INVERTED_VALUE = InvertedValue.CounterClockwise_Positive;
 
@@ -33,25 +31,29 @@ public class ArmConstants {
 
     private static final double GEAR_RATIO = 2.5;
 
+    private static final SensorDirectionValue SENSOR_DIRECTION_VALUE = SensorDirectionValue.CounterClockwise_Positive;
 
-    private static void SET_MOTOR_CONFIGURATION() {
-        TalonFXConfiguration TALON_CONFIG = new TalonFXConfiguration();
-        TALON_CONFIG.Audio.BeepOnConfig = false;
-        TALON_CONFIG.Audio.BeepOnBoot = false;
-        TALON_CONFIG.MotorOutput.Inverted = INVERTED_VALUE;
-        TALON_CONFIG.MotorOutput.NeutralMode = NEUTRAL_MODE_VALUE;
-        TALON_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO;
-        MOTOR.getConfigurator().apply(TALON_CONFIG);
+    public static void configureMotor() {
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.Audio.BeepOnConfig = false;
+        config.Audio.BeepOnBoot = false;
+        config.MotorOutput.Inverted = INVERTED_VALUE;
+        config.MotorOutput.NeutralMode = NEUTRAL_MODE_VALUE;
+        config.Feedback.SensorToMechanismRatio = GEAR_RATIO;
+        MOTOR.getConfigurator().apply(config);
         MOTOR.optimizeBusUtilization();
     }
 
-    private static void SET_ENCODER_CONFIGURATION() {
-        MagnetSensorConfigs magnetSensor = new MagnetSensorConfigs();
-        CANcoderConfiguration ENCODER_CONFIGURATION = new CANcoderConfiguration();
-        ENCODER_CONFIGURATION.withMagnetSensor(magnetSensor);
-        magnetSensor.withSensorDirection(SensorDirectionValue.CounterClockwise_Positive);
-        ENCODER.getConfigurator().apply(ENCODER_CONFIGURATION);
+    public static void configureEncoder() {
+        CANcoderConfiguration config = new CANcoderConfiguration();
+        config.withMagnetSensor(new MagnetSensorConfigs().withSensorDirection(SENSOR_DIRECTION_VALUE));
+        ENCODER.getConfigurator().apply(config);
         ENCODER.optimizeBusUtilization();
         ANGLE_ENCODER_POSITION_SIGNAL.setUpdateFrequency(100);
+    }
+
+    static {
+        configureMotor();
+        configureEncoder();
     }
 }

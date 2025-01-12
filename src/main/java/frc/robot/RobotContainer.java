@@ -12,7 +12,7 @@ import frc.robot.subsystems.arm.Arm;
 
 public class RobotContainer {
 
-   public static Arm ARM = new Arm();
+   public static final Arm ARM = new Arm();
 
     public RobotContainer() {
         configureBindings();
@@ -20,7 +20,6 @@ public class RobotContainer {
 
     private void configureBindings() {
     }
-
 
     public Command getAutonomousCommand() {
         return Commands.print("No autonomous command configured");
